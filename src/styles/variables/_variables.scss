@@ -1,5 +1,6 @@
 $header-height: 70px;
-$main-height: calc(100vh - $header-height);
+$footer-height: 70px;
+$main-height: calc(100vh - $header-height - $footer-height);
 
 @mixin no-text-select {
     -webkit-user-select: none; /* Safari */

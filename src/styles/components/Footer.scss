@@ -1,0 +1,12 @@
+@use "../variables/variables" as *;
+
+.Footer {
+    background-color: var(--footer-bg-color);
+    height: $footer-height;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
