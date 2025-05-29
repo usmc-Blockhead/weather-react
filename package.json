@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "axios": "^1.7.2",
     "bootstrap-icons": "^1.11.3",
     "dotenv": "^16.4.5",
