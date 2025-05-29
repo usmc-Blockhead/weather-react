@@ -28,7 +28,7 @@ export async function getWeatherData(endpoint, place_id, measurementSystem) {
         if (error.response?.status === 429) {
             throw new Error("API rate limit exceeded. Please try again later.");
         }
-        throw new Error(`Failed to fetch weather data: ${error.message}`);
+        throw new Error(`Weather data fetch error: ${error.message}`);
     }
 }
 
@@ -57,6 +57,6 @@ export async function searchPlaces(text) {
         if (error.response?.status === 429) {
             throw new Error("API rate limit exceeded. Please try again later.");
         }
-        throw new Error(`Failed to search places: ${error.message}`);
+        throw new Error(`Place search error: ${error.message}`);
     }
 }

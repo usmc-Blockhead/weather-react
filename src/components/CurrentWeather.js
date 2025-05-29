@@ -4,18 +4,23 @@ import WeatherIcon from "./WeatherIcon";
 import "../styles/components/CurrentWeather.scss";
 
 function CurrentWeather({ data }) {
+    if (!data) {
+        return <div>Loading weather data...</div>;
+    }
+
     const {
-        cloud_cover,
-        feels_like,
-        humidity,
-        icon_num,
-        precipitation,
-        summary,
-        temperature,
-        uv_index,
-        visibility,
-        wind,
+        cloud_cover = 0,
+        feels_like = 0,
+        humidity = 0,
+        icon_num = 1,
+        precipitation = { total: 0 },
+        summary = "",
+        temperature = 0,
+        uv_index = 0,
+        visibility = 0,
+        wind = { speed: 0 },
     } = data;
+
     const { units } = useContext(WeatherContext);
 
     const otherInfoWidgets = [
