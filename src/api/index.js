@@ -1,9 +1,12 @@
 import axios from "axios";
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-console.log(API_KEY);
 
 export async function getWeatherData(endpoint, place_id, measurementSystem) {
+    if (!API_KEY) {
+        throw new Error("Weather API key is not configured. Please check your .env file.");
+    }
+
     const options = {
         method: "GET",
         url: `https://ai-weather-by-meteosource.p.rapidapi.com/${endpoint}`,
@@ -22,11 +25,18 @@ export async function getWeatherData(endpoint, place_id, measurementSystem) {
         const response = await axios.request(options);
         return response.data;
     } catch (error) {
-        console.error(error);
+        if (error.response?.status === 429) {
+            throw new Error("API rate limit exceeded. Please try again later.");
+        }
+        throw new Error(`Failed to fetch weather data: ${error.message}`);
     }
 }
 
 export async function searchPlaces(text) {
+    if (!API_KEY) {
+        throw new Error("Weather API key is not configured. Please check your .env file.");
+    }
+
     const options = {
         method: "GET",
         url: "https://ai-weather-by-meteosource.p.rapidapi.com/find_places",
@@ -44,6 +54,9 @@ export async function searchPlaces(text) {
         const response = await axios.request(options);
         return response.data;
     } catch (error) {
-        console.error(error);
+        if (error.response?.status === 429) {
+            throw new Error("API rate limit exceeded. Please try again later.");
+        }
+        throw new Error(`Failed to search places: ${error.message}`);
     }
 }

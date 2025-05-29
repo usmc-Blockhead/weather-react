@@ -7,6 +7,7 @@ const WeatherContext = createContext();
 function WeatherProvider({ children }) {
     const [place, setPlace] = useState(DEFAULT_PLACE);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [currentWeather, setCurrentWeather] = useState({});
     const [hourlyForecast, setHourlyForecast] = useState([]);
     const [dailyForecast, setDailyForecast] = useState([]);
@@ -18,30 +19,37 @@ function WeatherProvider({ children }) {
     useEffect(() => {
         async function _getWeatherData() {
             setLoading(true);
+            setError(null);
 
-            const cw = await getWeatherData(
-                "current",
-                place.place_id,
-                measurementSystem
-            );
-            setCurrentWeather(cw.current);
-            setUnits(UNITS[cw.units]);
+            try {
+                const cw = await getWeatherData(
+                    "current",
+                    place.place_id,
+                    measurementSystem
+                );
+                setCurrentWeather(cw.current);
+                setUnits(UNITS[cw.units]);
 
-            const hf = await getWeatherData(
-                "hourly",
-                place.place_id,
-                measurementSystem
-            );
-            setHourlyForecast(hf.hourly.data);
+                const hf = await getWeatherData(
+                    "hourly",
+                    place.place_id,
+                    measurementSystem
+                );
+                setHourlyForecast(hf.hourly.data);
 
-            const df = await getWeatherData(
-                "daily",
-                place.place_id,
-                measurementSystem
-            );
-            setDailyForecast(df.daily.data);
-
-            setLoading(false);
+                const df = await getWeatherData(
+                    "daily",
+                    place.place_id,
+                    measurementSystem
+                );
+                setDailyForecast(df.daily.data);
+            } catch (err) {
+                setError(err.message);
+                // Keep the previous data if there's an error
+                console.error("Weather data fetch error:", err);
+            } finally {
+                setLoading(false);
+            }
         }
         _getWeatherData();
     }, [place, measurementSystem]);
@@ -52,6 +60,7 @@ function WeatherProvider({ children }) {
                 place,
                 setPlace,
                 loading,
+                error,
                 currentWeather,
                 hourlyForecast,
                 dailyForecast,
