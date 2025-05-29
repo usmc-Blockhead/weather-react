@@ -5,6 +5,8 @@
 .App-light {
     background-color: var(--main-bg-color);
     color: var(--primary-text-color);
-
     overflow: hidden;
+    position: relative;
+    min-height: 100vh;
+    backdrop-filter: blur(5px);
 }
